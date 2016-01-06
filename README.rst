@@ -1,7 +1,7 @@
 
-================
-Region on Github
-================
+=================
+Regions on Github
+=================
 
 Region on Github is a simple Django app to track github events/activities
 of people from a given set of regions.
