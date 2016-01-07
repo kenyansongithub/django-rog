@@ -53,17 +53,17 @@ class GitHubApi(object):
 
     def put(self, endpoint):
         request = urllib.request.Request(self.api_host + endpoint, method='PUT')
-        authorize(request)
+        self.authorize(request)
         return self.response(request)
 
     def delete(self, endpoint):
         request = urllib.request.Request(self.api_host + endpoint, method='DELETE')
-        authorize(request)
+        self.authorize(request)
         return self.response(request)
 
     def get(self, endpoint):
         request = urllib.request.Request(self.api_host + endpoint, method='GET')
-        authorize(request)
+        self.authorize(request)
         return self.response(request)
 
     def get_user(self, username):
