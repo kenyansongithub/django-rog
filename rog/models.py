@@ -28,7 +28,7 @@ class GitHubApi(object):
         auth_header = ''
         auth_name = ''
     else:
-        auth_header = {'Authorization': 'token %s' % (api_account.token),}
+        auth_header = {"Authorization": "token %s" % (api_account.token),}
         auth_name = api_account.username
 
     def response(self, request):
