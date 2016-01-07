@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^api/',include(
         [
         #url(r'^$', views.index, name='index'),
-        url(r'^activities/$', views.activities, name='activities'),
+        url(r'^activities$', views.activities, name='activities'),
         ]),
         name='api'),
 ]

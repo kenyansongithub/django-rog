@@ -1,7 +1,7 @@
 
 var KenyansOnGithub= function () {
     var host='http://localhost:8000';
-    var eventsurl=host+'/kog/api/activities/';
+    var eventsurl=host+'/rog/api/activities';
 
     return{
         get_activities:function () {
