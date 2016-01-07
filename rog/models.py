@@ -25,10 +25,10 @@ class GitHubApi(object):
         api_account = GitHubKenyansWatcher.objects.get(pk=1)
     except OperationalError:
         api_account = None
-        auth_header = ''
+        auth_header =  dict()
         auth_name = ''
     else:
-        auth_header = {"Authorization": "token %s" % (api_account.token),}
+        #auth_header = {,}
         auth_name = api_account.username
 
     def response(self, request):
@@ -46,19 +46,25 @@ class GitHubApi(object):
         else:
             # response.info().header
             return response.read().decode()
+    
+    def authorize(self, request):
+        if self.api_account is not None:
+            request.add_header("Authorization", "token %s" % (self.api_account.token))
 
     def put(self, endpoint):
-        request = urllib.request.Request(self.api_host + endpoint, None, self.auth_header, method='PUT')
+        request = urllib.request.Request(self.api_host + endpoint, method='PUT')
+        authorize(request)
         return self.response(request)
 
     def delete(self, endpoint):
-        request = urllib.request.Request(self.api_host + endpoint, None, self.auth_header, method='DELETE')
+        request = urllib.request.Request(self.api_host + endpoint, method='DELETE')
+        authorize(request)
         return self.response(request)
 
     def get(self, endpoint):
-        # request = urllib.request.Request(endpoint)
-        # request.add_header('Authorization', 'token %s' % token)
-        return self.response(urllib.request.Request(self.api_host + endpoint, None, self.auth_header))
+        request = urllib.request.Request(self.api_host + endpoint, method='GET')
+        authorize(request)
+        return self.response(request)
 
     def get_user(self, username):
         return self.get('/user/' + username)
