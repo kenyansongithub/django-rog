@@ -55,3 +55,5 @@ def activities(req):
         response= HttpResponse(json.dumps(rs), content_type='application/json')
         response['Access-Control-Allow-Origin']= '*'
         return response
+    else:
+        pass

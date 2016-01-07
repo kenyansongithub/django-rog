@@ -1,20 +1,20 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from rog.models import Location,GitHubUser,GitHubKenyansWatcher
+from rog.models import Location,GitHubUser,GitHubWatcherTokens
 from django.db import models
 
 # Register your models here.
 class GithubTokenInline(admin.StackedInline):
-    model=GitHubKenyansWatcher
+    model=GitHubWatcherTokens
     can_delete = False
     verbose_name_plural = 'tokens'
 
-class UserAdmin(UserAdmin):
+class MyUserAdmin(UserAdmin):
     inlines = (GithubTokenInline,)
 
 admin.site.unregister(User)
-admin.site.register(User,UserAdmin)
+admin.site.register(User,MyUserAdmin)
 
 
 class GitHubUserAdmin(admin.StackedInline):
@@ -32,3 +32,4 @@ class LocationAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 admin.site.register(Location,LocationAdmin)
+#admin.site.register(GitHubKenyansWatcher)
