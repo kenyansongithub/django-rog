@@ -42,16 +42,16 @@ def activities(req):
     data = api.activities()
 
     rs = []
-
-    for i in json.loads(data):
-        try:
-            user=GitHubUser.objects.get(username=i['actor']['login'])
-        except GitHubUser.DoesNotExist as e:
-            pass
-        else:
-            i['actor']['location'] = user.location.name
-        rs.append(i)
-
-    response= HttpResponse(json.dumps(rs), content_type='application/json')
-    response['Access-Control-Allow-Origin']= '*'
-    return response
+    if data is not None:
+        for i in json.loads(data):
+            try:
+                user=GitHubUser.objects.get(username=i['actor']['login'])
+            except GitHubUser.DoesNotExist as e:
+                pass
+            else:
+                i['actor']['location'] = user.location.name
+            rs.append(i)
+    
+        response= HttpResponse(json.dumps(rs), content_type='application/json')
+        response['Access-Control-Allow-Origin']= '*'
+        return response
