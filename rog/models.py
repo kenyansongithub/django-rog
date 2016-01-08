@@ -6,35 +6,45 @@ from django.contrib.auth.admin import User
 from django.dispatch import receiver
 import os
 import json
-import urllib.request, urllib.parse, urllib.error
+
+from urllib.parse import urlencode
+from urllib.error import  URLError
+from urllib.request import Request,urlopen
 
 
 # Create your models here.
 
 
-class GitHubKenyansWatcher(models.Model):
-    user = models.OneToOneField(User, unique=True)
+class GitHubWatcherTokens(models.Model):
+    
+    owner = models.ForeignKey(User)
     token = models.CharField(max_length=100, null=False)
     username = models.CharField(max_length=50, null=False)
 
 
+
 class GitHubApi(object):
     api_host = "https://api.github.com"
-
-    try:
-        api_account = GitHubKenyansWatcher.objects.get(pk=1)
-    except OperationalError:
-        api_account = None
-        auth_header = ''
-        auth_name = ''
-    else:
-        auth_header = {'Authorization': 'token %s' % (api_account.token),}
-        auth_name = api_account.username
-
+    
+    
+    def __init__(self):
+        try:
+            self.api_account = GitHubWatcherTokens.objects.first()
+        except OperationalError:
+            self.api_account = None
+            self.auth_header =  dict()
+            self.auth_name = ''
+        else:
+            #auth_header = {,}
+            self.auth_name = self.api_account.username
+            
+            
+            
+            
     def response(self, request):
         try:
-            response = urllib.request.urlopen(request)
-        except urllib.error.URLError as e:
+            response = urlopen(request)
+        except URLError as e:
             if hasattr(e, 'reason'):
                 print('Failed to reach a server')
                 print('Reason ', e.reason)
@@ -46,25 +56,34 @@ class GitHubApi(object):
         else:
             # response.info().header
             return response.read().decode()
+    
+    def authorize(self, request):
+        if self.api_account is not None:
+            request.add_header("Authorization", "token %s" % (self.api_account.token))
 
     def put(self, endpoint):
-        request = urllib.request.Request(self.api_host + endpoint, None, self.auth_header, method='PUT')
+        request = Request(self.api_host + endpoint, method='PUT')
+        self.authorize(request)
         return self.response(request)
 
     def delete(self, endpoint):
-        request = urllib.request.Request(self.api_host + endpoint, None, self.auth_header, method='DELETE')
+        request = Request(self.api_host + endpoint, method='DELETE')
+        self.authorize(request)
         return self.response(request)
 
     def get(self, endpoint):
-        # request = urllib.request.Request(endpoint)
-        # request.add_header('Authorization', 'token %s' % token)
-        return self.response(urllib.request.Request(self.api_host + endpoint, None, self.auth_header))
+        request = Request(self.api_host + endpoint, method='GET')
+        self.authorize(request)
+        return self.response(request)
 
     def get_user(self, username):
         return self.get('/user/' + username)
 
     def activities(self):
-        return self.get('/users/' + self.auth_name + '/received_events')
+        endpoint='/users/' + self.auth_name + '/received_events'
+    
+        print(endpoint)
+        return self.get(endpoint)
 
 
 class Location(models.Model):
@@ -76,7 +95,7 @@ class Location(models.Model):
 
     def update_users(self):
         api = GitHubApi()
-        q = urllib.parse.urlencode({'q': 'location:' + self.name})
+        q = urlencode({'q': 'location:' + self.name})
         res = api.get('/search/users?' + q)
         if res is not None:
             data = json.loads(res)  # todo check if response
