@@ -32,10 +32,13 @@ App.prototype.toString = function() {
 
 App.prototype.after_login = function() {
 	$.mobile.changePage($("#list"));
+	//console.log('after login'); todo store activites in local storage
 	//this.ttrss = new TinyTinyRSS(this, localStorage.server_url, localStorage.session_id);
-    this.activities = new KenyansOnGithub().get_activities();
+    /*this.activities =*/ new KenyansOnGithub().get_activities(function(){
+		App.prototype.populateList();
+	});
 	//this.reload();
-    this.populateList();
+
 };
 
 App.prototype.reload = function() {
@@ -63,8 +66,8 @@ App.prototype.gotUnreadFeeds = function(new_articles) {
 App.prototype.populateList = function() {
 	var ul = $("#list ul");
 	var html_str = "";
-	for (var i = 0; i < this.activities.length; i++) {
-		var activity = this.activities[i];
+	for (var i = 0; i < window.app.activities.length; i++) {
+		var activity = window.app.activities[i];
 		//html_str += "<li"+ (article.unread ? " class='unread'" : "") +"><a href='#full-"+i+"'><p class='ui-li-desc'><strong>" + article.feed_title + "</strong></p><h3 class='ui-li-heading'>" + article.title + "</h3><p class='ui-li-desc'>" + article.excerpt + "</p></a></li>";
         html_str +=
             '<li>' +
