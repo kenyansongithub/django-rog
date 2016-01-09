@@ -28,7 +28,7 @@ GitHubEvents=function() {
         '<div class="simple">' +
         '<span class="octicon octicon-star" aria-label="Watch"></span>' +
         '<div class="title">' +
-        '<a href="/mishin" data-ga-click="type:WatchEvent target:actor">' + activity['actor']['login'] + '</a> from '+activity['actor']['location']+' starred' +
+        '<a href="/mishin" data-ga-click="type:WatchEvent target:actor">' + activity['actor']['login'] + '</a> from '+activity['actor']['location']+' starred ' +
         '<a href="'+activity['repo']['url']+'" data-ga-click="News feed, event click, Event click type:WatchEvent target:repo">' + activity.repo.name + '</a>' +
         '</div>' +
         '<div class="time">' +
