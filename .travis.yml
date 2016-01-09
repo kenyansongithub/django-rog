@@ -5,12 +5,9 @@ env:
   - DJANGO=1.9
 install:
   - pip install -q Django==$DJANGO --use-mirrors
-  - pip install pep8 --use-mirrors
-  - pip install https://github.com/dcramer/pyflakes/tarball/master
   - pip install -q -e . --use-mirrors
 before_script:
-  - "pep8 --exclude=migrations --ignore=E501,E225 src"
-  - pyflakes -x W src
+
 script:
   - python3.4 setup.py sdist
 deploy:
