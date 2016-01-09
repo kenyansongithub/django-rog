@@ -4,16 +4,17 @@ var KenyansOnGithub= function () {
     var eventsurl='/rog/api/activities';
 
     return{
-        get_activities:function () {
-            var activities;
+        get_activities:function (cb) {
+           // var activities;
             $.ajax({
                 url: eventsurl,
-                async:false,
+                async:true,
                 success: function(result){
-                    activities= result;
+                    window.app.activities= result;
+                    cb()
                 }
             });
-            return activities;
+            //return activities;
         }
     }
 };
