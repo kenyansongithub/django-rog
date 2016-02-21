@@ -21,7 +21,7 @@ GitHubEvents = function () {
             '</p>'+
 
 
-        '<div class="pull-sm-right">'+
+        '<div class="pull-right">'+
            '<span class="octicon octicon-git-branch label label-success" aria-label="Fork"> </span> '+
             '<time class="timeago  label label-time" datetime="' + activity['created_at'] + '">10 mins ago</time>'+
         '</div>';
@@ -42,7 +42,7 @@ GitHubEvents = function () {
             '<a href="' + html_url + activity['repo']['name'] + '" >' + activity.repo.name + '</a>' +
             '</p>'+
 
-            '<div class="pull-sm-right">'+
+            '<div class="pull-right">'+
             '<span class="octicon octicon-star label label-primary" aria-label="Star"> </span> '+
             '<time class="timeago  label label-time" datetime="' + activity['created_at'] + '"> 10 mins ago</time>'+
             '</div>';
@@ -63,7 +63,7 @@ GitHubEvents = function () {
             '</p>'+
 
 
-            '<div class="pull-sm-right">'+
+            '<div class="pull-right">'+
             '<span class="octicon octicon-repo label label-danger" aria-label="Create"> </span> '+
             '<time class="timeago  label label-time" datetime="' + activity['created_at'] + '"> 10 mins ago</time>'+
             '</div>';
@@ -82,7 +82,7 @@ GitHubEvents = function () {
             '</p>'+
 
 
-            '<div class="pull-sm-right">'+
+            '<div class="pull-right">'+
             '<span class="octicon octicon-person label label-warning" aria-label="Member"> </span> '+
             '<time class="timeago  label label-time" datetime="' + activity['created_at'] + '"> 10 mins ago</time>'+
             '</div>';
@@ -122,7 +122,7 @@ GitHubEvents = function () {
             '</p>'+
 
 
-            '<div class="pull-sm-right">'+
+            '<div class="pull-right">'+
             '<span class="octicon octicon-git-branch label label-info" aria-label="Fork"> </span> '+
             '<time class="timeago  label label-time" datetime="' + activity['created_at'] + '"> 10 mins ago</time>'+
             '</div>';
