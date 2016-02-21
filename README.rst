@@ -3,6 +3,8 @@
 Regions on Github
 =================
 
+https://travis-ci.org/kenyansongithub/django-rog.svg?branch=master
+
 Region on Github is a simple Django app to track github events/activities
 of people from a given set of regions.
 
@@ -22,7 +24,7 @@ Quick start
 
     url(r'^rog/', include('rog.urls')),
 
-3. Run `python manage.py migrate` to create the polls models.
+3. Run `python manage.py migrate` to create the rog models.
 
 4. Start the development server and visit http://127.0.0.1:8000/admin/
    to create a location (you'll need the Admin app enabled).
