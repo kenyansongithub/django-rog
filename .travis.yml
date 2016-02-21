@@ -10,10 +10,14 @@ before_script:
 
 script:
   - python3.4 setup.py sdist
+
+before_deploy:
+  - echo "deploying to GitHub releases"
 deploy:
   provider: releases
   api_key: "${API_KEY}"
-  file: "dist/*"
+  file_glob: true
+  file: "dist/*.tar.gz"
   skip_cleanup: true
   on:
     tags: true
