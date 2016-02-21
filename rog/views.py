@@ -51,7 +51,7 @@ def activities(req):
             else:
                 priority_location = user.location
                 if priority_location:
-                    i['actor']['location'] = priority_location
+                    i['actor']['location'] = priority_location.name
                 else:
                     i['actor']['location'] = 'Kenya'
 
