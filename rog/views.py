@@ -30,10 +30,9 @@ def update_users(req):
     lc.update_users()
 
 
-
 def index(req):
     #update_users(req)
-    return render(req,'app/index.html')
+    return render(req, 'app/index.html', {'location': 'Kenyans'})
 
 
 def activities(req):
@@ -45,15 +44,20 @@ def activities(req):
     if data is not None:
         for i in json.loads(data):
             try:
-                user=GitHubUser.objects.get(username=i['actor']['login'])
+                user = GitHubUser.objects.get(username=i['actor']['login'])
             except GitHubUser.DoesNotExist as e:
+                i['actor']['location'] = 'Kenya'
                 pass
             else:
-                i['actor']['location'] = user.location.name
+                priority_location = user.location
+                if priority_location:
+                    i['actor']['location'] = priority_location
+                else:
+                    i['actor']['location'] = 'Kenya'
+
             rs.append(i)
-    
-        response= HttpResponse(json.dumps(rs), content_type='application/json')
-        response['Access-Control-Allow-Origin']= '*'
+        response = HttpResponse(json.dumps(rs), content_type='application/json')
+        response['Access-Control-Allow-Origin'] = '*'
         return response
     else:
         pass
