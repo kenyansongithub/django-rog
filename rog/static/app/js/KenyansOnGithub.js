@@ -2,6 +2,7 @@
 var KenyansOnGithub= function () {
     var host='http://danleyb2.pythonanywhere.com';
     var eventsurl='/rog/api/activities';
+    //eventsurl='data/sample.json';
 
     var test_act=[];
     return{

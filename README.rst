@@ -3,7 +3,8 @@
 Regions on Github
 =================
 
-https://travis-ci.org/kenyansongithub/django-rog.svg?branch=master
+.. image:: https://travis-ci.org/kenyansongithub/django-rog.svg?branch=master
+    :target: https://travis-ci.org/kenyansongithub/django-rog
 
 Region on Github is a simple Django app to track github events/activities
 of people from a given set of regions.
