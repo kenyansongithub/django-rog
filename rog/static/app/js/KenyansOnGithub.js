@@ -13,6 +13,9 @@ var KenyansOnGithub= function () {
             $.ajax({
                 url: eventsurl,
                 async:true,
+                beforeSend: function() {
+                    $('#activities').html("<h3 class='text-center'>Loading Activities...  <img src='/static/app/images/ajax-loader.gif' /></h3>");
+                },
                 success: function(result){
                     //app.activities= result;
                     cb(result)

@@ -6,7 +6,7 @@
     {% load staticfiles %}
     <link rel="icon" href="/static/app/favicon.ico" type="image/x-icon" />
 
-    <link rel="stylesheet" href="/static/app/css/libs/bootstrap.css">
+    <link rel="stylesheet" href="/static/app/css/libs/bootstrap.min.css">
     <link rel="stylesheet" href="/static/octicons/octicons.css">
     <link rel="stylesheet" href="/static/app/css/style.css">
 </head>
@@ -15,57 +15,60 @@
 <!-- Begin page content -->
 <div class="container">
 
-    <nav class="navbar navbar-light bg-faded navbar-inverse">
+    <nav class="navbar navbar-light navbar-inverse">
+        <div class="container-fluid">
 
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/rog">
+                    Kenyans On Github
 
-        <a class="navbar-brand" href="#">
-            <!--img alt="Brand" src="/favicon.ico"-->
-            Kenyans On Github
-            <iframe src="https://ghbtns.com/github-btn.html?user=kenyansongithub&repo=django-rog&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px" style="margin-left: 30px;"></iframe>
-            <iframe src="https://ghbtns.com/github-btn.html?user=kenyansongithub&repo=django-rog&type=watch&count=true&v=2" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-            <iframe src="https://ghbtns.com/github-btn.html?user=kenyansongithub&repo=django-rog&type=fork&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a ><iframe src="https://ghbtns.com/github-btn.html?user=kenyansongithub&repo=django-rog&type=watch&count=true&v=2" frameborder="0" scrolling="0" width="100px" height="20px"></iframe></a></li>
+                <li><a ><iframe src="https://ghbtns.com/github-btn.html?user=kenyansongithub&repo=django-rog&type=fork&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe></a></li>
+                <li><a ><iframe src="https://ghbtns.com/github-btn.html?user=kenyansongithub&repo=django-rog&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px" ></iframe></a></li>
 
-        </a>
+            </ul>
 
-
-        <form class="form-inline pull-xs-right">
-            <input class="form-control" type="text" placeholder="Search">
-            <button class="btn btn-success-outline" type="submit">Search</button>
-        </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" id="refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</a></li>
+            </ul>
+        </div>
 
     </nav> <!-- /navbar -->
 
 
     <div class="panel panel-warning main-section">
         <!-- Default panel contents -->
-        <div class="panel-heading text-sm-center">
+        <div class="panel-heading text-center">
 
 
             <h2>
                 <span id="all" class="btn btn-default active-activity">
                     <span class="octicon octicon-globe"></span>
-                    All <span class="badge">4</span>
+                    All <span class="badge">0</span>
                 </span>
                 <span id="creates" class="btn btn-danger">
                     <span class="octicon octicon-repo" aria-label="Create"></span>
-                    Creates
+                    Creates <span class="badge">0</span>
                 </span>
                 <span id="forks" class="btn btn-success">
                     <span class="octicon octicon-git-branch" aria-label="Fork"></span>
-                    Forks
+                    Forks <span class="badge">0</span>
                 </span>
 
                     <span id="stars" class="btn btn-primary">
                     <span class="octicon octicon-star" aria-label="Watch"></span>
-                    Stars
+                    Stars <span class="badge">0</span>
                 </span>
                 <span id="pulls" class="btn btn-info">
                     <span class="octicon octicon-git-pull-request" aria-label="Pull Req"></span>
-                    Pulls
+                    Pulls <span class="badge">0</span>
                 </span>
                 <span id="adds" class="btn btn-warning">
                     <span class="octicon octicon-person" aria-label="Member"></span>
-                    Adds
+                    Adds <span class="badge">0</span>
                 </span>
 
             </h2>
@@ -115,7 +118,7 @@
 
 <footer class="footer">
     <div class="container">
-        <span class="text-muted">Copyright. 2016</span>
+
         <a href="http://danleyb2.bshellz.net" class="pull-right">Nyaundi Brian</a>
     </div>
 </footer>
