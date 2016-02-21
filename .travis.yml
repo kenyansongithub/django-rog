@@ -4,17 +4,16 @@ python:
 env:
   - DJANGO=1.9
 install:
-  - pip install -q Django==$DJANGO --use-mirrors
-  - pip install -q -e . --use-mirrors
+  - pip install -q Django==$DJANGO
+  - pip install -q -e .
 before_script:
 
 script:
   - python3.4 setup.py sdist
 deploy:
   provider: releases
-  user: "GITHUB USERNAME"
-  password: "GITHUB PASSWORD"
-  file: "dist/django-rog-0.1.tar.gz"
+  api_key: "${API_KEY}"
+  file: "dist/*"
   skip_cleanup: true
   on:
     tags: true
