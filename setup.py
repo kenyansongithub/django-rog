@@ -16,7 +16,7 @@ setup(
         include_package_data=True,
         zip_safe=False,
         license='BSD License',
-        description='A simple Django app to track activities of people from same location.',
+        description='A simple Django app to track activities of people from some location.',
         long_description=README,
         url='https://www.example.com/',
         author='danleyb2',

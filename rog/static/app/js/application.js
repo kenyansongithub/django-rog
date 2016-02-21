@@ -30,11 +30,14 @@ $(document).bind( "pagebeforechange", function( e, data ) {
 			// Call our internal method that builds the content for the category
 			// on the fly based on our in-memory category data structure.
 			var i = parseInt(u.hash.split("-")[1], 10);
-			app.showFull(app.unread_articles[i], false);
+			app.showFull(app.activities[i], false);
 
 			// Make sure to tell changePage() we've handled this call so it doesn't
 			// have to do anything.
 			e.preventDefault();
 		}
 	}
+});
+$(document).on("pagechange", function () {
+	$(".ui-input-search").hide();
 });

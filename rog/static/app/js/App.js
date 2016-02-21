@@ -1,6 +1,7 @@
 
 function App() {
 	//this.login = new Login(this);
+	this.github_Region=KenyansOnGithub();
     this.after_login();
 	this.currentIndex = -1;
 	this.page = 2;
@@ -34,16 +35,21 @@ App.prototype.after_login = function() {
 	$.mobile.changePage($("#list"));
 	//console.log('after login'); todo store activites in local storage
 	//this.ttrss = new TinyTinyRSS(this, localStorage.server_url, localStorage.session_id);
-    /*this.activities =*/ new KenyansOnGithub().get_activities(function(){
-		App.prototype.populateList();
-	});
-	//this.reload();
+
+	this.reload();
 
 };
 
 App.prototype.reload = function() {
-	this.unread_articles = [];
+	//this.unread_articles = [];
 	//this.ttrss.getUnreadFeeds(this.gotUnreadFeeds.bind(this));
+	app=this;
+
+	this.github_Region.get_activities(function(activities){
+		//console.log(this);
+		app.activities=activities;
+		app.populateList();
+	});
 };
 
 App.prototype.gotUnreadFeeds = function(new_articles) {
@@ -66,17 +72,28 @@ App.prototype.gotUnreadFeeds = function(new_articles) {
 App.prototype.populateList = function() {
 	var ul = $("#list ul");
 	var html_str = "";
-	for (var i = 0; i < window.app.activities.length; i++) {
-		var activity = window.app.activities[i];
-		//html_str += "<li"+ (article.unread ? " class='unread'" : "") +"><a href='#full-"+i+"'><p class='ui-li-desc'><strong>" + article.feed_title + "</strong></p><h3 class='ui-li-heading'>" + article.title + "</h3><p class='ui-li-desc'>" + article.excerpt + "</p></a></li>";
-        html_str +=
-            '<li>' +
-            new GitHubEvents().render(activity)+
-            '</li>'
+	var render=GitHubEvents();
+
+	for (var i = 0; i < this.activities.length; i++) {
+		var activity = this.activities[i];
+
+        html_str+=
+            '<li class="ui-li-has-alt ui-li-has-thumb" data-filtertext="'+activity['type']+'">' +
+			'<div class="ui-btn">' +
+			'<img src="'+activity['actor']['avatar_url']+'s=80" style="min-width: 80px;min-height: 80px;">' +
+            render.render(activity)+
+            '</div>' +
+
+			'<a href="#full-'+i+'" data-rel="dialog" data-transition="slideup" class="ui-btn ui-btn-icon-notext ui-icon-carat-r" title="More Info"></a>'+
+
+			'</li>';
 	}
+
 	ul.html(html_str);
 
+
 	ul.listview("refresh");
+	$("time.timeago",ul).timeago();
 
 	//$(".count").html(this.unread_articles.length + " / " + this.unread_articles.length);
 	//$(".count").button("refresh");
@@ -99,9 +116,10 @@ App.prototype.updateList = function() {
 	//$(".count").button("refresh");
 };
 
-App.prototype.showFull = function(article, slide_back) {
+App.prototype.showFull = function(activity, slide_back) {
 
-	this.currentIndex = this.unread_articles.indexOf(article);
+	this.currentIndex = this.activities.indexOf(activity);
+	console.log(activity);
 
 	var page_id = "#full";
 
@@ -113,14 +131,14 @@ App.prototype.showFull = function(article, slide_back) {
 	$(page_id + " .author").html("");
 	$(page_id + " .article").html("");
 
-	$(page_id + " .date").html((new Date(parseInt(article.updated, 10) * 1000)).toLocaleString());
-	$(page_id + " .title").html(article.title);
-	$(page_id + " .title").prop("href", article.link);
-	$(page_id + " .title").prop("title", article.link);
-	$(page_id + " .feed_title").html(article.feed_title);
-	if(article.author && article.author.length > 0)
-		$(page_id + " .author").html("&ndash; " + article.author);
-	$(page_id + " .article").html(article.content);
+	$(page_id + " .timeago").attr("datetime",activity['created_at']).timeago();
+	$(page_id + " .title").html(activity.title);
+	$(page_id + " .title").prop("href", activity.link);
+	$(page_id + " .title").prop("title", activity.link);
+	$(page_id + " .feed_title").html(activity.feed_title);
+	if(activity.author && activity.author.length > 0)
+		$(page_id + " .author").html("&ndash; " + activity.author);
+	$(page_id + " .article").html(activity.content);
 
 	$.mobile.changePage($(page_id), { transition: "slide", reverse: slide_back });
 };

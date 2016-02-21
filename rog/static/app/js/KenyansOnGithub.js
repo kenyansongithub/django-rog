@@ -3,20 +3,24 @@ var KenyansOnGithub= function () {
     var host='http://danleyb2.pythonanywhere.com';
     var eventsurl='/rog/api/activities';
 
+    var test_act=[];
     return{
         get_activities:function (cb) {
-           // var activities;
+
+            //this.activities= test_act;
+            //cb(test_act);return;
             $.ajax({
                 url: eventsurl,
                 async:true,
                 success: function(result){
-                    window.app.activities= result;
-                    cb()
+                    //app.activities= result;
+                    cb(result)
                 }
             });
             //return activities;
         }
     }
+
 };
 
 

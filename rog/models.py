@@ -8,8 +8,8 @@ import os
 import json
 
 from urllib.parse import urlencode
-from urllib.error import  URLError
-from urllib.request import Request,urlopen
+from urllib.error import URLError
+from urllib.request import Request, urlopen
 
 
 # Create your models here.
@@ -22,25 +22,20 @@ class GitHubWatcherTokens(models.Model):
     username = models.CharField(max_length=50, null=False)
 
 
-
 class GitHubApi(object):
     api_host = "https://api.github.com"
-    
-    
+
     def __init__(self):
         try:
             self.api_account = GitHubWatcherTokens.objects.first()
         except OperationalError:
             self.api_account = None
-            self.auth_header =  dict()
+            self.auth_header = dict()
             self.auth_name = ''
         else:
             #auth_header = {,}
             self.auth_name = self.api_account.username
-            
-            
-            
-            
+
     def response(self, request):
         try:
             response = urlopen(request)
@@ -54,14 +49,16 @@ class GitHubApi(object):
             return None
 
         else:
-            # response.info().header
-            return response.read().decode()
+            # response.status
+            # dict(response.info())
+            return response#.read().decode()
     
     def authorize(self, request):
         if self.api_account is not None:
             request.add_header("Authorization", "token %s" % (self.api_account.token))
 
     def put(self, endpoint):
+        print('Posting to resource: '+endpoint)
         request = Request(self.api_host + endpoint, method='PUT')
         self.authorize(request)
         return self.response(request)
@@ -72,6 +69,7 @@ class GitHubApi(object):
         return self.response(request)
 
     def get(self, endpoint):
+        print('Requesting resource: '+endpoint)
         request = Request(self.api_host + endpoint, method='GET')
         self.authorize(request)
         return self.response(request)
@@ -80,15 +78,24 @@ class GitHubApi(object):
         return self.get('/user/' + username)
 
     def activities(self):
-        endpoint='/users/' + self.auth_name + '/received_events'
-    
-        print(endpoint)
-        return self.get(endpoint)
+        endpoint = '/users/' + self.auth_name + '/received_events'
+        http_res = self.get(endpoint)
+
+        res = http_res.read().decode()
+        headers = dict(http_res.info())
+        return res
+
+    def following(self):
+        return self.get('/user/following')
 
 
 class Location(models.Model):
     name = models.CharField(max_length=100, unique=True)
     count = models.IntegerField(default=0)
+
+
+    class Meta:
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -96,31 +103,62 @@ class Location(models.Model):
     def update_users(self):
         api = GitHubApi()
         q = urlencode({'q': 'location:' + self.name})
-        res = api.get('/search/users?' + q)
-        if res is not None:
-            data = json.loads(res)  # todo check if response
+        url = '/search/users?' + q #+ '&page=4' #for nairobi
+        while True:
+            http_res = api.get(url)
 
-            # with open(os.path.dirname(__file__) + '/seacrhlocation', encoding='utf-8') as rec_events:
-            #    data = json.loads(rec_events.read())
+            res = http_res.read().decode()
+            headers = dict(http_res.info())
 
-            if data['total_count'] > 0:
-                self.count = data['total_count']
-                post_save.disconnect(update_location_users,Location)
-                self.save()
-                post_save.connect(update_location_users,Location)
+            if res is not None:
+                pprint(headers)
+                data = json.loads(res)  # todo check if response
 
-                for i in data['items']:
-                    gu = GitHubUser()
-                    gu.username = i['login']
-                    gu.location_id = self.id
-                    #pprint(gu)
-                    gu.follow()
-                    gu.save()
+                if data['total_count'] > 0:
+                    self.count = data['total_count']
+                    post_save.disconnect(update_location_users, Location)
+                    self.save()
+                    post_save.connect(update_location_users, Location)
+
+                    for i in data['items']:
+                        #user, created = GitHubUser.objects.get_or_create(username=i['login'],location=self)
+                        try:
+                            user = GitHubUser.objects.get(username=i['login'])
+                        except GitHubUser.DoesNotExist:
+                            user = GitHubUser(username=i['login'])
+                            user.location = self
+                            user.follow()
+                            user.save()
+
+                        try:
+                            pass
+                            #user.save()
+                        except Exception:
+                            break
+
+                    if int(headers['X-RateLimit-Remaining']) < 1:
+                        print('X-RateLimit Ended')
+                        break
+                    else:
+                        if 'Link' in headers.keys():
+                            links_dict={
+                                rel.split('=')[1].strip('"') : link.strip('<> ')
+                                for (link,rel) in (url_rel.split(';')
+                                                   for url_rel in headers['Link'].split(','))
+
+                                }
+                            pprint(links_dict)
+                            if 'next' in links_dict.keys():
+                                url = links_dict['next'].split('com')[1]
+                                continue
+                            else:
+                                break
+                        else: break
+                else: break
+            else: break
 
 
-
-
-@receiver(post_save, sender=Location)
+#@receiver(post_save, sender=Location)
 def update_location_users(sender, instance, **kwargs):
     instance.update_users()
 
@@ -136,7 +174,9 @@ class GitHubUser(models.Model):
     def follow(self):
         # PUT /user/following/:username
         api = GitHubApi()
-        api.put('/user/following/' + self.username)
+        http_res = api.put('/user/following/' + self.username)
+        headers = dict(http_res.info())
+        #X-RateLimit-Remaining
 
     def un_follow(self):
         # DELETE /user/following/:username

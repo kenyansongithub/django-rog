@@ -19,12 +19,15 @@ img {
 	font-size: 1.2em;
 }
 
-#full h1 a, #full2 h1 a {
+#full h1 a, ul#activitiesList li a, #full2 h1 a {
 	text-decoration: none;
 }
 
 #list .ui-li-heading {
 	font-weight: normal;
+}
+.ui-listview {
+	margin-top: 5px !important;
 }
 
 #list .unread .ui-li-heading {
@@ -35,3 +38,22 @@ img {
 .smallogo img { width: 50%; }
 
 .count { font-size: 0.8em; padding-top: 0.6em; padding-right: 0.2em; text-shadow: 0 0 2px black; }
+#gitribbon {
+    display: none;
+}
+@media (min-width: 1024px){
+    #gitribbon {
+        display: block;
+
+    }
+    #gitribbon img {
+        position: fixed;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+    }
+}
+div[data-role="footer"]{
+	text-align: center;
+}
