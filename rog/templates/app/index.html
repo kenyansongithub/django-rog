@@ -5,16 +5,24 @@
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <title>Kenyans On Github</title>
+
+  <title>{{location}} On Github</title>
     {% load staticfiles %}
-  <link rel="stylesheet" href="/static/content/jquery.mobile-1.3.1.min.css" />
+    <link rel="icon" href="/static/app/favicon.ico" type="image/x-icon" />
+  <!--link rel="stylesheet" href="/static/content/jquery.mobile-1.3.1.min.css" --/>
   
   <!-- Extra Codiqa features -->
   <link rel="stylesheet" href="/static/app/css/screen.css" />
   
   <!-- jQuery and jQuery Mobile -->
-  <script src="/static/scripts/jquery-1.10.2.min.js"></script>
-  <script src="/static/scripts/jquery.mobile-1.3.1.js"></script>
+  <!--script src="/static/scripts/jquery-1.10.2.min.js"></script>
+  <script src="/static/scripts/jquery.mobile-1.3.1.js"></script-->
+
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+
     <script src="/static/scripts/jquery.timeago.js"></script>
 
   <!-- Extra Codiqa features -->
@@ -26,6 +34,7 @@
   <script src="/static/app/js/application.js"></script>
     <script src="/static/app/js/KenyansOnGithub.js"></script>
     <script src="/static/app/js/events.js"></script>
+    <link rel="stylesheet" href="/static/octicons/octicons.css">
    
 </head>
 <body>
@@ -36,14 +45,56 @@
             Reload
         </a>
         <h3>
-            Kenyans on Github
+            {{location}} on Github
         </h3>
         <span class="ui-btn-right count" data-theme="a">0 / 0</span>
     </div>
     <div data-role="content">
-        <ul data-role="listview" data-inset="false">
-            <li><a href="#full">Loading ...</a></li>
+
+        <div data-role="controlgroup" data-type="horizontal" align="center" data-mini="true" data-corners="false">
+
+            <input type="radio" name="radio-action" id="remove" value="all" checked="checked">
+            <label for="remove" class="ui-btn ui-corner-all"><span class="octicon octicon-globe"></span> All</label>
+
+            <input type="radio" name="radio-action" id="hide" value="WatchEvent">
+            <label for="hide"><span class="octicon octicon-star" aria-label="Watch"></span> Star</label>
+
+
+            <input type="radio" name="radio-action" id="width" value="CreateEvent">
+            <label for="width"><span class="octicon octicon-repo" aria-label="Create"></span> Create</label>
+
+
+            <input type="radio" name="radio-action" id="fork" value="ForkEvent">
+            <label for="fork"><span class="octicon octicon-git-branch" aria-label="Fork"></span> Fork</label>
+
+
+
+            <input type="radio" name="radio-action" id="add" value="MemberEvent">
+            <label for="add"><span class="octicon octicon-person" aria-label="Member"></span> Add</label>
+
+
+            <input type="radio" name="radio-action" id="pull" value="PullRequestEvent">
+            <label for="pull"><span class="octicon octicon-git-pull-request" aria-label="Pull Req"></span> Pull Req</label>
+
+
+        </div>
+        <ul data-role="listview" data-inset="false" data-filter="true" id="activitiesList">
+            <li id="status"><a href="#full">Loading ...</a></li>
+
         </ul>
+        <a href="https://github.com/kenyansongithub/django-rog" id="gitribbon">
+            <img style="" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png">
+        </a>
+    </div>
+    <div data-role="footer" class="ui-bar">
+
+        <iframe src="https://ghbtns.com/github-btn.html?user=kenyansongithub&repo=django-rog&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+        <iframe src="https://ghbtns.com/github-btn.html?user=kenyansongithub&repo=django-rog&type=watch&count=true&v=2" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+        <iframe src="https://ghbtns.com/github-btn.html?user=kenyansongithub&repo=django-rog&type=fork&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+        <iframe src="https://ghbtns.com/github-btn.html?user=kenyansongithub&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+        <a href="http://danleyb2.bshellz.net" data-role="button" data-icon="user">Nyaundi Brian</a>
+
     </div>
 </div>
 
@@ -74,6 +125,7 @@
 </div>
 
 <div data-role="page" id="full">
+
   <div data-theme="a" data-role="header">
     <a data-role="button" data-transition="slide" data-direction="reverse" href="#list"
         data-icon="home" data-iconpos="left" class="ui-btn-left back">
@@ -84,9 +136,13 @@
   </div>
   <div data-role="content">
 	  <header>
-      <p><span class="feed_title"></span> <span class="author"></span></p>
-			<h1><a class="title" href="" target="_blank"></a></h1>
-			<p><timedate class="date"></timedate></p>
+          <img src="#" id="avatar">
+          <p>
+              <span class="feed_title"></span> <span class="author"></span>
+          </p>
+          <h1><a class="title" href="" target="_blank"></a></h1>
+
+          <p><time class="timeago ui-li-aside"></time></p>
 		</header>
 		<article class="article"></article>
   </div>
@@ -96,9 +152,57 @@
   </div>
 </div>
 <script>
-    jQuery(document).ready(function() {
-        jQuery("time.timeago").timeago();
-    });
+
+
+    ( function( $, undefined ) {
+
+        $( document ).bind( "pagecreate", function( e ) {
+
+
+            $.mobile.document.one( "filterablecreate", "#activitiesList", function() {
+                $( "#activitiesList" ).filterable( "option", "filterCallback", function( index, searchValue ) {
+                    console.log(this);
+                    return true;
+                });
+            });
+
+            $( "[name='radio-action']" ).bind( "change", function( e ) {
+                console.log('sorting activities');
+                r=e
+                switch (e.target.value){
+                    case 'WatchEvent':
+
+                    case 'CreateEvent':
+                        //break;
+
+                    case 'MemberEvent':
+
+                    case 'ForkEvent':
+                        //break;
+
+                    case 'PullRequestEvent':
+                        $(".ui-input-search > input").val(e.target.value).keyup();
+                        break;
+                    default:
+                      $(".ui-input-search > input").val("").keyup();
+                }
+
+
+            });
+            var $listview = $(this).find('[data-role="listview"]');
+            $(this).delegate('input[data-type="search"]', 'keyup', function () {
+                if ($listview.children(':visible').not('#no-results').length === 0) {
+                    $('#no-results').fadeIn(500);
+                } else {
+                    $('#no-results').fadeOut(250);
+                }
+            });
+
+        });
+
+    })( jQuery );
+
+
 </script>
 </body>
 </html>
