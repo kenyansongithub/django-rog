@@ -147,7 +147,7 @@ var populateList = function(activityType) {
             '<li class="list-group-item" >' +
             '<div class="row">' +
             '<div class="col-md-12">'+
-            "<h4 class=\"text-sm-center\">Kenyans don/'t like doing this activity.</h4>" +
+            "<h4 class=\"text-center\">Of late Kenyans don/'t like doing this activity.</h4>" +
             '</div>' +
             '</div>'+
             '</li>';
