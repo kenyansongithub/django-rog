@@ -128,7 +128,7 @@ var populateList = function(activityType) {
             '<div class="row">' +
 
                 '<div class="col-md-1">'+
-                '<img src="' + activity['actor']['avatar_url'] + 's=80" class="left img-fluid ">'+
+                '<img src="' + activity['actor']['avatar_url'] + 's=80" class="left img-thumbnail">'+
                 '</div>'+
                 '<div class="col-md-11">'+
                 render.render(activity) +
