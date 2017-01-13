@@ -10,7 +10,7 @@ admin.autodiscover()
 
 urlpatterns = [
 
-    url(r'^$', include('rog.urls')),
+    url(r'^', include('rog.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
 ]
