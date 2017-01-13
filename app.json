@@ -1,0 +1,13 @@
+{
+  "name": "Regions on Github",
+  "description": "Events by people from the same location on github collector.",
+  "image": "heroku/python",
+  "repository": "https://github.com/kenyansongithub/django-rog",
+  "keywords": [
+    "python",
+    "django"
+  ],
+  "addons": [
+    "heroku-postgresql"
+  ]
+}

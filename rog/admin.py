@@ -82,7 +82,6 @@ def export(request):
     following_dict = json.loads(following)
 
     def get_location(username):
-        #return 'kisii'
         print('Getting location for User: '+username, end=' ')
         user_full_profile = api.get('/users/'+username).read().decode()
         location = json.loads(user_full_profile)['location']
