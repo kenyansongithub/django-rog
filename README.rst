@@ -19,4 +19,4 @@ Quick start
 2. Start the development server and visit http://127.0.0.1:8000/admin/
    to create a location (you'll need the Admin app enabled).
 
-3. Visit http://127.0.0.1:8000/ to view the users' (from the location) activities
+3. Visit http://127.0.0.1:8000/ to view the users (from the location) activities
